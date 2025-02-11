@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class NameController {
 
-    @GetMapping
+    @GetMapping("/")
     public String homePage() {
         return "Welcome to the Home Page!";
     }
