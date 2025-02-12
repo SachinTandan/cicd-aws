@@ -10,6 +10,6 @@ public class NameController {
 
     @GetMapping("/")
     public String homePage() {
-        return "Welcome to the Home Page!";
+        return "Welcome to the Home Page! New Things are coming!! ";
     }
 }
