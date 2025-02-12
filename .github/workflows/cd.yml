@@ -1,0 +1,28 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # Use your EC2 GitHub runner
+
+    steps:
+      - name: Pull latest Docker image
+        run: |
+          echo "Pulling latest Docker image..."
+          docker pull ${{ secrets.DOCKER_USERNAME }}/cicd-pipeline:latest
+
+          echo "Stopping and removing old container..."
+          docker stop cicd-pipeline || true
+          docker rm cicd-pipeline || true
+
+          echo "Running new container..."
+          docker run -d -p 8080:8080 --name cicd-pipeline \
+            --restart always \
+            ${{ secrets.DOCKER_USERNAME }}/cicd-pipeline:latest
+
+          echo "Deployment successful!"
